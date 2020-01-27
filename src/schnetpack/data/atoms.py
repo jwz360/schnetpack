@@ -147,17 +147,6 @@ class AtomsData(Dataset):
     def available_properties(self):
         return self._get_available_properties()
 
-    def create_subset(self, idx):
-        """
-        Returns a new dataset that only consists of provided indices.
-        Args:
-            idx (sequence): subset indices
-
-        Returns:
-            spk.data.AtomsDataSubset: subset of self with selected indices
-        """
-        return AtomsDataSubset(self, idx)
-
     def add_system(self, atoms, **properties):
         """
         Add atoms data to the dataset.
@@ -250,7 +239,8 @@ class AtomsData(Dataset):
         """
         warnings.warn(
             "get_availalble_properties is deprecated and will be removed in future! "
-            "Use the available_properties property-function instead!"
+            "Use the available_properties property-function instead!",
+            DeprecationWarning,
         )
         return self.available_properties
 
@@ -268,7 +258,8 @@ class AtomsData(Dataset):
         """
         warnings.warn(
             "get_atoms is deprecated and will be removed in future! Use the connect "
-            "function from ase.db to read atoms from the database."
+            "function from ase.db to read atoms from the database.",
+            DeprecationWarning,
         )
         with connect(self.dbpath) as conn:
             row = conn.get(idx + 1)
@@ -291,7 +282,8 @@ class AtomsData(Dataset):
         """
         warnings.warn(
             "get_properties is deprecated and will be removed in future! Use the "
-            "connect function from ase.db to read atoms from the database."
+            "connect function from ase.db to read atoms from the database.",
+            DeprecationWarning,
         )
         return self._get_properties(idx)
 
@@ -301,10 +293,29 @@ class AtomsData(Dataset):
         """
         warnings.warn(
             "create_splits is deprecated and will be removed in future versions! Use "
-            "spk.data.train_test_split instead.", DeprecationWarning,
+            "spk.data.train_test_split instead.",
+            DeprecationWarning,
         )
         from .partitioning import train_test_split
         return train_test_split(self, num_train, num_val, split_file)
+
+    def create_subset(self, idx):
+        """
+        Deprecated function! Use spk.data.partitioning.create_subset instead!
+        Create a subset of atomistic datasets.
+
+        Args:
+            idx (sequence): subset indices
+
+        Returns:
+            spk.data.AtomsDataSubset: subset of self with selected indices
+        """
+        warnings.warn(
+            "create_subset is deprecated! Use spk.data.partitioning.create_subset "
+            "instead.",
+            DeprecationWarning,
+        )
+        return spk.data.partitioning.create_subset(self, idx)
 
     def __len__(self):
         with connect(self.dbpath) as conn:
@@ -540,6 +551,24 @@ class ConcatAtomsData(ConcatDataset):
 
         return atomrefs
 
+    def create_subset(self, idx):
+        """
+        Deprecated function! Use spk.data.partitioning.create_subset instead!
+        Create a subset of atomistic datasets.
+
+        Args:
+            idx (sequence): subset indices
+
+        Returns:
+            spk.data.AtomsDataSubset: subset of self with selected indices
+        """
+        warnings.warn(
+            "create_subset is deprecated! Use spk.data.partitioning.create_subset "
+            "instead.",
+            DeprecationWarning,
+        )
+        return spk.data.partitioning.create_subset(self, idx)
+
     def __add__(self, other):
         return ConcatAtomsData([*self.datasets, other])
 
@@ -549,8 +578,8 @@ class AtomsDataSubset(Subset):
     Subset of an atomistic dataset at specified indices.
 
     Arguments:
-        dataset (spk.AtomsData): The whole Dataset
-        indices (sequence): Indices in the whole set selected for subset
+        dataset (torch.utils.data.Dataset): atomistic dataset
+        indices (sequence): subset indices
 
     """
 
@@ -563,6 +592,24 @@ class AtomsDataSubset(Subset):
 
     def get_atomref(self, properties=None):
         return self.dataset.available_properties(properties=properties)
+
+    def create_subset(self, idx):
+        """
+        Deprecated function! Use spk.data.partitioning.create_subset instead!
+        Create a subset of atomistic datasets.
+
+        Args:
+            idx (sequence): subset indices
+
+        Returns:
+            spk.data.AtomsDataSubset: subset of self with selected indices
+        """
+        warnings.warn(
+            "create_subset is deprecated! Use spk.data.partitioning.create_subset "
+            "instead.",
+            DeprecationWarning,
+        )
+        return spk.data.partitioning.create_subset(self, idx)
 
     def __add__(self, other):
         if not type(other) == AtomsDataSubset:

@@ -82,8 +82,8 @@ def test_add_and_read(empty_asedata, example_data):
 
 def test_empty_subset_of_subset(empty_asedata, example_data):
     data = test_add_and_read(empty_asedata, example_data)
-    subset = data.create_subset([0, 1])
-    subsubset = subset.create_subset([])
+    subset = spk.data.partitioning.create_subset(data, [0, 1])
+    subsubset = spk.data.partitioning.create_subset(subset, [])
     assert len(subset) == 2
     assert len(subsubset) == 0
 
@@ -160,7 +160,7 @@ def test_dataset(qm9_dbpath, qm9_avlailable_properties):
 
     # test valid path, but no properties
     dataset = spk.data.AtomsData(qm9_dbpath)
-    assert set(dataset._available_properties) == set(qm9_avlailable_properties)
+    assert set(dataset.available_properties) == set(qm9_avlailable_properties)
 
 
 def test_extension_check():

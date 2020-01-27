@@ -1,10 +1,11 @@
 import os
 import numpy as np
-from schnetpack.data import AtomsDataSubset
+from schnetpack.data import AtomsDataSubset, AtomsDataError
 
 
 __all__ = [
     "train_test_split",
+    "create_subset",
 ]
 
 
@@ -87,7 +88,28 @@ def train_test_split(
                 split_file, train_idx=train_idx, val_idx=val_idx, test_idx=test_idx
             )
 
-    train = data.create_subset(train_idx)
-    val = data.create_subset(val_idx)
-    test = data.create_subset(test_idx)
+    train = create_subset(data, train_idx)
+    val = create_subset(data, val_idx)
+    test = create_subset(data, test_idx)
+
     return train, val, test
+
+
+def create_subset(dataset, indices):
+    r"""
+    Create a subset of atomistic datasets.
+
+    Args:
+        dataset (torch.utils.data.Dataset): dataset
+        indices (sequence): indices of the subset
+
+    Returns:
+        spk.data.AtomsDataSubset: subset of input dataset
+
+    """
+    max_id = 0 if len(indices) == 0 else max(indices)
+    if len(dataset) <= max_id:
+        raise AtomsDataError(
+            "The subset indices do not match the total length of the dataset!"
+        )
+    return AtomsDataSubset(dataset, indices)
