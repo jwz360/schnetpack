@@ -78,19 +78,6 @@ class OrganicMaterialsDatabase(DownloadableAtomsData):
             environment_provider=environment_provider,
         )
 
-    def create_subset(self, idx):
-        idx = np.array(idx)
-        subidx = idx if self.subset is None else np.array(self.subset)[idx]
-
-        return OrganicMaterialsDatabase(
-            path=self.path,
-            download=False,
-            subset=subidx,
-            load_only=self.load_only,
-            collect_triples=self.collect_triples,
-            environment_provider=self.environment_provider,
-        )
-
     def _convert(self):
         """
         Converts .tar.gz to a .db file

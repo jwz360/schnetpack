@@ -82,8 +82,8 @@ from schnetpack.data import *
 
 from schnetpack import atomistic
 from schnetpack import data
-from schnetpack import datasets
 from schnetpack import environment
+from schnetpack import datasets
 from schnetpack import interfaces
 from schnetpack import md
 from schnetpack.train import metrics, hooks

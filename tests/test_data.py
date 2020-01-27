@@ -144,7 +144,7 @@ def test_dataset(qm9_dbpath, qm9_avlailable_properties):
     dataset = spk.data.AtomsData(
         qm9_dbpath, available_properties=qm9_avlailable_properties
     )
-    assert dataset.available_properties == qm9_avlailable_properties
+    assert dataset._available_properties == qm9_avlailable_properties
     assert dataset.__len__() == 19
 
     # test valid path exists but wrong properties
@@ -160,7 +160,7 @@ def test_dataset(qm9_dbpath, qm9_avlailable_properties):
 
     # test valid path, but no properties
     dataset = spk.data.AtomsData(qm9_dbpath)
-    assert set(dataset.available_properties) == set(qm9_avlailable_properties)
+    assert set(dataset._available_properties) == set(qm9_avlailable_properties)
 
 
 def test_extension_check():

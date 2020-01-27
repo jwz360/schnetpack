@@ -103,7 +103,7 @@ class AtomsLoader(DataLoader):
     and stddev.
 
     Arguments:
-        dataset (Dataset): dataset from which to load the data.
+        dataset (spk.AtomsData): dataset from which to load the data.
         batch_size (int, optional): how many samples per batch to load
             (default: 1).
         shuffle (bool, optional): set to ``True`` to have the data reshuffled

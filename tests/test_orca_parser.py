@@ -90,8 +90,8 @@ def test_orca_parser(tmpdir, main_path, target_orca_db):
     db_target = AtomsData(target_orca_db)
     db_test = AtomsData(db_path)
 
-    target_atoms, target_properties = db_target.get_properties(0)
-    test_atoms, test_properties = db_test.get_properties(0)
+    target_atoms, target_properties = db_target._get_properties(0)
+    test_atoms, test_properties = db_test._get_properties(0)
 
     assert np.allclose(
         target_atoms.get_atomic_numbers(), test_atoms.get_atomic_numbers()
